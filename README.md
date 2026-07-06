@@ -29,16 +29,20 @@ We evaluated the performance of $O(N^2)$ sensor correlations using **Pandas (CPU
 
 ## System Architecture
 
-```mermaid
-graph TD
-    A[Caltrans PeMS Data] -->|METR-LA.csv| B[Data Ingestion / GCS]
-    B --> C[Urgency Engine - compute_urgency.py]
-    B --> D[GPU Benchmark Engine - benchmark.py]
-    C -->|corridors.json| E[Arterial Web Dashboard]
-    D -->|benchmark_results.json| E
-    E -->|Context + Query| F[Gemini 2.5 Flash NLP Layer]
-    F -->|Signal Action Plan| E
-```
+Arterial uses a decoupled architecture separating the analytical data processors from the frontend presentation layer:
+
+### Local Prototype Pipeline
+*   **Data Source**: A local `METR-LA.csv` file representing historical loop-detector speeds.
+*   **Analytics Engine (`compute_urgency.py`)**: Runs rolling mean and speed drop calculations on the dataset, outputting active bottlenecks to `corridors.json`.
+*   **GPU Benchmark (`benchmark.py`)**: Profiles Pandas vs. cuDF correlation speeds on the dataset, outputting performance metrics to `benchmark_results.json`.
+*   **Web Dashboard**: A vanilla HTML/CSS/JS control center that asynchronously fetches the computed metrics at runtime.
+*   **Gemini NLP Layer**: Calls the Gemini 2.5 Flash API directly from the client to provide interactive, contextual traffic recommendations based on the active corridor scores.
+
+### Production Scaling Design
+To scale this system to state-wide DOT deployment, the architecture is designed to integrate:
+*   **Google Cloud Storage**: For staging high-frequency sensor streams (binary sub-minute traffic logs).
+*   **Google BigQuery**: Serving as the analytical data warehouse to store, query, and partition historical sensor readings.
+*   **NVIDIA RAPIDS & cuDF**: Running in automated Dataproc Serverless or Vertex AI environments to calculate correlation matrices across thousands of sensors concurrently.
 
 ---
 
@@ -70,7 +74,7 @@ Run the calculation engine to process the raw traffic streams and score the corr
 ```bash
 python compute_urgency.py
 ```
-*Note: If the CSV file is not detected locally, the script falls back to a representative dataset using real METR-LA sensor IDs for demonstration and testing convenience.*
+> **Note:** This repository ships pre-computed `corridors.json` and `benchmark_results.json` generated from the real METR-LA dataset (see Performance Benchmarks above). If you clone this repo and run `compute_urgency.py` without first downloading `METR-LA.csv`, the script will fall back to placeholder values using real sensor IDs — useful for verifying the pipeline runs, but not a substitute for the actual dataset. Download the CSV per the instructions above to reproduce the real computed results.
 
 ### 3. Run the Dashboard
 Serve the dashboard locally:
