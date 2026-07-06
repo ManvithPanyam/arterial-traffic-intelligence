@@ -61,12 +61,16 @@ source .venv/bin/activate  # Or `.venv\Scripts\activate` on Windows
 pip install -r requirements.txt  # pandas, numpy, etc.
 ```
 
-### 2. Compute Corridor Urgency
-Run the calculation engine to process the traffic dataset and score the corridors:
+### 2. Download Dataset & Compute Corridor Urgency
+To run the calculation engine on real data, you must first obtain the traffic dataset:
+1. Download `METR-LA.csv` from [Zenodo Record 5146275](https://zenodo.org/records/5146275) (direct content link: `https://zenodo.org/api/records/5146275/files/METR-LA.csv/content`).
+2. Place the downloaded `METR-LA.csv` file directly in the project root directory.
+
+Run the calculation engine to process the raw traffic streams and score the corridors:
 ```bash
 python compute_urgency.py
 ```
-*If `METR-LA.csv` is not present locally, the script automatically retrieves standard representative metrics aligned to the Los Angeles highway network.*
+*Note: If the CSV file is not detected locally, the script falls back to a representative dataset using real METR-LA sensor IDs for demonstration and testing convenience.*
 
 ### 3. Run the Dashboard
 Serve the dashboard locally:
