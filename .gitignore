@@ -6,3 +6,6 @@ node_modules/
 METR-LA.csv
 benchmark_results (1).json
 submission_screenshots/
+*.mp3
+*.wav
+project_plan.html
