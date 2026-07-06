@@ -1,0 +1,8 @@
+{
+    "num_sensors": 2000,
+    "num_timesteps": 20000,
+    "pandas_time_sec": 223.801,
+    "cudf_time_sec": 12.4836,
+    "speedup": 17.93,
+    "gpu_available": true
+}

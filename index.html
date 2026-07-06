@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arterial — Traffic Congestion & Signal Optimization Platform</title>
+    <meta name="description" content="Arterial uses cuDF-accelerated spatial-temporal traffic analysis and Gemini NLP to optimize city-wide traffic signal timing and transit corridors.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo">
+                    <i data-lucide="route" class="logo-icon"></i>
+                    <span class="logo-text">Arterial</span>
+                </div>
+                <span class="badge badge-primary">Active Node</span>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-tab="dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Control Center</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="interventions">
+                    <i data-lucide="traffic-cone"></i>
+                    <span>Optimizations</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="gpu-benchmarks">
+                    <i data-lucide="cpu"></i>
+                    <span>GPU Benchmarks</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="copilot">
+                    <i data-lucide="sparkles"></i>
+                    <span>Gemini Copilot</span>
+                </a>
+            </nav>
+
+            <div class="system-status-panel">
+                <div class="status-header">
+                    <span>SYSTEM STATE</span>
+                    <span class="pulse-indicator"></span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Engine</span>
+                    <span class="value text-success">cuDF Active</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Hardware</span>
+                    <span class="value">NVIDIA T4 GPU</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Warehouse</span>
+                    <span class="value text-primary">BigQuery Ready</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="app-header">
+                <div class="header-left">
+                    <h1>Arterial — Real-Time Corridor Intelligence</h1>
+                    <p class="subtitle">Real-time signal optimization, congestion forecasting, and natural language decision analytics.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="trigger-ingestion">
+                        <i data-lucide="refresh-cw"></i>
+                        <span>Ingest DOT Feed</span>
+                    </button>
+                    <div class="user-profile">
+                        <div class="avatar">H</div>
+                        <div class="profile-info">
+                            <span class="name">Caltrans District 7 HQ</span>
+                            <span class="role">Chief Planner</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Grid Content -->
+            <div class="dashboard-grid">
+                <!-- Row 1: Key Metrics -->
+                <section class="grid-card col-span-3 metric-row">
+                    <div class="metric-card avg-speed">
+                        <div class="metric-info">
+                            <span class="metric-label">Average Speed (City Grid)</span>
+                            <span class="metric-value" id="metric-avg-speed">42.4 km/h</span>
+                            <span class="metric-sub text-success"><i data-lucide="trending-up"></i> +4.8% improvement</span>
+                        </div>
+                        <div class="metric-icon bg-success-soft"><i data-lucide="zap"></i></div>
+                    </div>
+
+                    <div class="metric-card active-congestion">
+                        <div class="metric-info">
+                            <span class="metric-label">Active Congestion Points</span>
+                            <span class="metric-value text-warning" id="metric-active-points">14 / 207</span>
+                            <span class="metric-sub text-success"><i data-lucide="trending-down"></i> -18% vs yesterday</span>
+                        </div>
+                        <div class="metric-icon bg-warning-soft"><i data-lucide="alert-triangle"></i></div>
+                    </div>
+
+                    <div class="metric-card gpu-speedup">
+                        <div class="metric-info">
+                            <span class="metric-label">GPU Acceleration Speedup</span>
+                            <span class="metric-value" id="metric-gpu-speedup">28.5x</span>
+                            <span class="metric-sub">cuDF over pandas</span>
+                        </div>
+                        <div class="metric-icon"><i data-lucide="cpu"></i></div>
+                    </div>
+                </section>
+
+                <!-- Row 2: Live Network Visualizer & Intervention Queue -->
+                <section class="grid-card col-span-2">
+                    <div class="card-header">
+                        <h2><i data-lucide="map" class="text-primary"></i> Live Network Analytics Map</h2>
+                        <span class="badge badge-success">Simulated METR-LA Grid</span>
+                    </div>
+                    <div class="map-container">
+                        <canvas id="network-map"></canvas>
+                        <div class="map-overlay">
+                            <div class="map-legend">
+                                <span class="legend-item"><span class="color-dot green"></span> Smooth (>55 km/h)</span>
+                                <span class="legend-item"><span class="color-dot yellow"></span> Moderate (30-55 km/h)</span>
+                                <span class="legend-item"><span class="color-dot red"></span> Congested (<30 km/h)</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="grid-card col-span-1">
+                    <div class="card-header">
+                        <h2><i data-lucide="clock" class="text-warning"></i> Signal Interventions</h2>
+                        <span class="badge badge-warning">High Priority</span>
+                    </div>
+                    <div class="intervention-list" id="intervention-queue">
+                        <!-- Filled by JS -->
+                    </div>
+                </section>
+
+                <!-- Row 3: cuDF Performance & Gemini Copilot -->
+                <section class="grid-card col-span-1">
+                    <div class="card-header">
+                        <h2><i data-lucide="bar-chart-3" class="text-accent"></i> Acceleration Profile</h2>
+                        <span class="badge">cuDF.pandas vs Pandas</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="benchmark-chart"></canvas>
+                    </div>
+                    <div class="benchmark-stats">
+                        <div class="stat-box">
+                            <span class="stat-label">Pandas (CPU)</span>
+                            <span class="stat-value" id="stat-pandas-time">0.237s</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">cuDF.pandas (GPU)</span>
+                            <span class="stat-value text-accent" id="stat-cudf-time">0.008s</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="grid-card col-span-2">
+                    <div class="card-header">
+                        <h2><i data-lucide="sparkles" class="text-primary"></i> Gemini Decision Assistant</h2>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <input type="password" id="gemini-api-key" placeholder="Gemini API Key..." style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); color: #fff; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; width: 140px; outline: none; transition: border-color 0.2s;" />
+                            <span class="badge badge-primary">NL Layer</span>
+                        </div>
+                    </div>
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="message system">
+                                <i data-lucide="bot" class="message-avatar"></i>
+                                <div class="message-content">
+                                    Welcome. I am your Arterial Decision Assistant. I analyze the scored corridors, traffic density patterns, and signal settings from the cuDF pipeline. Ask me anything about recommended signal plans or transit delays.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-suggestions">
+                            <button class="btn btn-sm btn-suggestion">Which corridors need signal retiming this evening?</button>
+                            <button class="btn btn-sm btn-suggestion">Where are our worst transit delays right now?</button>
+                            <button class="btn btn-sm btn-suggestion">Summarize the GPU optimization impact.</button>
+                        </div>
+                        <div class="chat-input-wrapper">
+                            <input type="text" id="chat-input" placeholder="Ask Gemini about traffic optimizations..." />
+                            <button class="btn btn-primary btn-icon" id="send-chat">
+                                <i data-lucide="send"></i>
+                            </button>
+                        </div>
+                    </div>
+            </div>
+            <!-- Footer Attribution -->
+            <footer class="app-footer" style="margin-top: 2.5rem; border-top: 1px solid var(--border); padding-top: 1rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--muted);">
+                <div>
+                    <strong>Data Source:</strong> Caltrans Performance Measurement System (PeMS) METR-LA Spatial-Temporal Dataset.
+                </div>
+                <div style="display: flex; gap: 0.75rem; font-weight: 500;">
+                    <span>Google BigQuery</span>
+                    <span>•</span>
+                    <span>Google Cloud Storage</span>
+                    <span>•</span>
+                    <span>RAPIDS cuDF</span>
+                    <span>•</span>
+                    <span>Gemini 2.5 Pro</span>
+                </div>
+            </footer>
+        </main>
+    </div>
+    
+    <!-- Notification Toast -->
+    <div class="toast" id="toast">
+        <i data-lucide="check-circle" class="toast-icon"></i>
+        <div class="toast-content">
+            <span class="toast-title">Success</span>
+            <span class="toast-desc">Data pipeline run completed.</span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="index.js"></script>
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>

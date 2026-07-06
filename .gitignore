@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store
+METR-LA.csv
+benchmark_results (1).json
+submission_screenshots/

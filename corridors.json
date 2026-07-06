@@ -1,0 +1,52 @@
+[
+    {
+        "id": 1,
+        "sensor_id": "769867",
+        "name": "I-5 South at Broadway (Sensor 769867)",
+        "currentSpeed": 37.2,
+        "delay": "11 min delay",
+        "status": "Moderate",
+        "reduct": "8%",
+        "action": "Extend Green time by 15s"
+    },
+    {
+        "id": 2,
+        "sensor_id": "716943",
+        "name": "US-101 North at Hollywood Blvd (Sensor 716943)",
+        "currentSpeed": 43.0,
+        "delay": "9 min delay",
+        "status": "Moderate",
+        "reduct": "7%",
+        "action": "Deploy Phase Shift Plan B"
+    },
+    {
+        "id": 3,
+        "sensor_id": "765171",
+        "name": "I-10 West at Santa Monica (Sensor 765171)",
+        "currentSpeed": 52.9,
+        "delay": "1 min delay",
+        "status": "Smooth",
+        "reduct": "4%",
+        "action": "No intervention needed"
+    },
+    {
+        "id": 4,
+        "sensor_id": "774067",
+        "name": "I-405 South at Sunset Blvd (Sensor 774067)",
+        "currentSpeed": 56.0,
+        "delay": "1 min delay",
+        "status": "Smooth",
+        "reduct": "4%",
+        "action": "No intervention needed"
+    },
+    {
+        "id": 5,
+        "sensor_id": "767053",
+        "name": "I-110 North at DTLA Interchange (Sensor 767053)",
+        "currentSpeed": 54.2,
+        "delay": "1 min delay",
+        "status": "Smooth",
+        "reduct": "4%",
+        "action": "No intervention needed"
+    }
+]
