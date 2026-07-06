@@ -54,7 +54,7 @@ To scale this system to state-wide DOT deployment, the architecture is designed 
 
 ### 1. Clone & Set Up Environment
 ```bash
-git clone https://github.com/YOUR_USERNAME/arterial-traffic-intelligence.git
+git clone https://github.com/ManvithPanyam/arterial-traffic-intelligence.git
 cd arterial-traffic-intelligence
 
 # Initialize virtual environment
@@ -62,27 +62,32 @@ python -m venv .venv
 source .venv/bin/activate  # Or `.venv\Scripts\activate` on Windows
 
 # Install dependencies
-pip install -r requirements.txt  # pandas, numpy, etc.
+pip install -r requirements.txt
 ```
 
-### 2. Download Dataset & Compute Corridor Urgency
-To run the calculation engine on real data, you must first obtain the traffic dataset:
-1. Download `METR-LA.csv` from [Zenodo Record 5146275](https://zenodo.org/records/5146275) (direct content link: `https://zenodo.org/api/records/5146275/files/METR-LA.csv/content`).
-2. Place the downloaded `METR-LA.csv` file directly in the project root directory.
+### 2. Run the Dashboard & Connect Gemini
+Since this repository already pre-packages the computed `corridors.json` and `benchmark_results.json` files generated from the actual METR-LA dataset, you can immediately serve and evaluate the dashboard without any dataset preparation:
 
-Run the calculation engine to process the raw traffic streams and score the corridors:
-```bash
-python compute_urgency.py
-```
-> **Note:** This repository ships pre-computed `corridors.json` and `benchmark_results.json` generated from the real METR-LA dataset (see Performance Benchmarks above). If you clone this repo and run `compute_urgency.py` without first downloading `METR-LA.csv`, the script will fall back to placeholder values using real sensor IDs — useful for verifying the pipeline runs, but not a substitute for the actual dataset. Download the CSV per the instructions above to reproduce the real computed results.
-
-### 3. Run the Dashboard & Connect Gemini
 1. Serve the dashboard locally:
    ```bash
    python -m http.server 8000
    ```
 2. Open [http://localhost:8000/](http://localhost:8000/) in your browser.
 3. To enable the **Gemini Decision Assistant**, enter your **Google AI Studio API Key** in the settings input located at the bottom of the left sidebar. The key is securely saved locally in your browser's `localStorage` and is only used for direct client-side requests to Google's Generative Language API endpoint.
+
+---
+
+## Regenerating Metrics from Raw Data (Optional)
+
+If you wish to recalculate the traffic urgency scores and delay estimates directly from the raw METR-LA dataset streams:
+
+1. Download `METR-LA.csv` from [Zenodo Record 5146275](https://zenodo.org/records/5146275) (direct content link: `https://zenodo.org/api/records/5146275/files/METR-LA.csv/content`).
+2. Place the downloaded `METR-LA.csv` file directly in the project root directory.
+3. Run the processing engine to update the local corridors database (`corridors.json`):
+   ```bash
+   python compute_urgency.py
+   ```
+   *Note: If the CSV file is not detected locally, the script falls back to a representative dataset using real METR-LA sensor IDs for testing convenience.*
 
 ---
 
