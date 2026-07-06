@@ -76,12 +76,13 @@ python compute_urgency.py
 ```
 > **Note:** This repository ships pre-computed `corridors.json` and `benchmark_results.json` generated from the real METR-LA dataset (see Performance Benchmarks above). If you clone this repo and run `compute_urgency.py` without first downloading `METR-LA.csv`, the script will fall back to placeholder values using real sensor IDs — useful for verifying the pipeline runs, but not a substitute for the actual dataset. Download the CSV per the instructions above to reproduce the real computed results.
 
-### 3. Run the Dashboard
-Serve the dashboard locally:
-```bash
-python -m http.server 8000
-```
-Open [http://localhost:8000/](http://localhost:8000/) in your browser.
+### 3. Run the Dashboard & Connect Gemini
+1. Serve the dashboard locally:
+   ```bash
+   python -m http.server 8000
+   ```
+2. Open [http://localhost:8000/](http://localhost:8000/) in your browser.
+3. To enable the **Gemini Decision Assistant**, enter your **Google AI Studio API Key** in the settings input located at the bottom of the left sidebar. The key is securely saved locally in your browser's `localStorage` and is only used for direct client-side requests to Google's Generative Language API endpoint.
 
 ---
 
